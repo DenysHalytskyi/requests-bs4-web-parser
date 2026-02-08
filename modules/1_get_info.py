@@ -37,12 +37,10 @@ try:
 
     # Find full title
     try:
-        title = soup.find('span', class_='product-clean-name').text.strip()
-        if title:
-            product_data["Title"] = title
+        product_data["Title"] = soup.find('span', class_='product-clean-name').text.strip()
 
     except AttributeError as e:
-        print(f"Error: {e}")
+        product_data["Title"] = None
 
     # Find characteristics
     try:
@@ -58,18 +56,31 @@ try:
         product_data["Characteristics"] = specs
 
     except (AttributeError, TypeError) as e:
-        print(f"Error: {e}")
+        product_data["Characteristics"] = None
 
-    # Find color
+
     try:
         product_data["Color"] = specs["Колір"]
+    except AttributeError as e:
+        product_data["Color"] = None
+    try:
         product_data["Memory"] = specs["Вбудована пам'ять"]
+    except AttributeError as e:
+        product_data["Memory"] = None
+    try:
         product_data["Producer"] = specs["Виробник"]
+    except AttributeError as e:
+        product_data["Producer"] = None
+    try:
         product_data['Diagonal'] = specs['Діагональ екрану']
+    except AttributeError as e:
+        product_data['Diagonal'] = None
+    try:
         product_data["Display_Resolution"] = specs['Роздільна здатність екрану']
+    except AttributeError as e:
+        product_data['Display_Resolution'] = None
 
-    except KeyError as e:
-        print(f"Error: {e}")
+
 
     # Find price
     try:
@@ -78,8 +89,8 @@ try:
             price = price_div.find('span').text.strip()
             product_data["Price"] = price.replace(' ', '')
 
-    except ValueError as e:
-        print(f"Error: {e}")
+    except AttributeError as e:
+        product_data["Price"] = None
 
     # Find images
     try:
@@ -90,7 +101,7 @@ try:
         product_data["Images"] = images_list
 
     except AttributeError as e:
-        print(f"Error: {e}")
+        product_data["Images"] = None
 
     # Find product code
     try:
@@ -101,7 +112,7 @@ try:
                 product_data["Product_Code"] = product_code_span
 
     except AttributeError as e:
-        print(f"Error: {e}")
+        product_data["Product_Code"] = None
 
     # Find reviews
     try:
@@ -111,7 +122,7 @@ try:
             product_data["Reviews"] = int(review_count)
 
     except AttributeError as e:
-        print(f"Error: {e}")
+        product_data["Reviews"] = None
 
 
     data_to_save = {
